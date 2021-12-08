@@ -43,7 +43,7 @@ int main(void)
 	return 0;
 }
 
-int compare(int *x,int *y)
+int compare(const void *x,const void *y)
 {
 	return (*(int *)x - *(int *)y);
 }
