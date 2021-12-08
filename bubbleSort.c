@@ -4,6 +4,8 @@
 
 #define SIZE 10
 
+int  compare(int *x,int *y);
+
 int main(void)
 {
 	int numbers[SIZE];
@@ -17,23 +19,31 @@ int main(void)
 	for(i = 0 ; i < SIZE ; i++)
 		printf(" %3d",numbers[i]);
 	putchar('\n');
+	// using qsort funciotn
+	qsort(numbers,SIZE,sizeof(int),compare);
+	
 	// Sort the array 
-	for(outer = 0 ; outer < SIZE ; outer++)
-	{
-		for(inner = outer+1 ; inner < SIZE ; inner++)
-		{
-			if(numbers[outer] > numbers[inner])
-			{
-				 tmp = numbers[inner];
-				 numbers[inner] = numbers[outer];
-				 numbers[outer] = tmp;
-			}
-		}
-	}
+//	for(outer = 0 ; outer < SIZE ; outer++)
+//	{
+//		for(inner = outer+1 ; inner < SIZE ; inner++)
+//		{
+//			if(numbers[outer] > numbers[inner])
+//			{
+//				 tmp = numbers[inner];
+//				 numbers[inner] = numbers[outer];
+//				 numbers[outer] = tmp;
+//			}
+//		}
+//	}
 	// Display sorted array
 	printf("Sorted array :");
 	for(i = 0 ; i < SIZE ; i++)
 		printf(" %3d",numbers[i]);
 	putchar('\n');
 	return 0;
+}
+
+int compare(int *x,int *y)
+{
+	return (*(int *)x - *(int *)y);
 }
