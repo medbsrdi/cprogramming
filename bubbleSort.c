@@ -4,7 +4,7 @@
 
 #define SIZE 10
 
-int  compare(int *x,int *y);
+int  compare(const void *x,const void *y);
 
 int main(void)
 {
