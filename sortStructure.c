@@ -7,17 +7,14 @@ typedef struct{
 	double temperature;
 }Statistic;
 
+// only the = operation are allowed in structure
+
 void swapS(Statistic *t,Statistic *d){
 	Statistic tmp;
 	
-	tmp.temperature = t->temperature;
-	strcpy(tmp.day,t->day);
-	
-	t->temperature = d->temperature;
-	strcpy(t->day,d->day);
-	
-	d->temperature = tmp.temperature;
-	strcpy(d->day,tmp.day);	
+	tmp = *t;
+	*t = *d;
+	*d = tmp;
 }
 
 void sortS(Statistic *t,size_t length)
