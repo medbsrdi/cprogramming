@@ -18,6 +18,27 @@ void UpperCaseEsp(char *p,size_t length){
 	}
 }
 
+void modify(char *p){
+	while(*p){
+		*p = toupper(*p);
+		if(*p == ' '){
+			*p = '_';
+		}
+		p++;
+	}
+}
+
+void modifyA(char *p)
+{
+	int i = 0;
+	while(p[i])
+	{
+		p[i] = toupper(p[i]);
+		if(p[i] == ' ') p[i] = '_';
+		i++;
+	}
+}
+
 int main(void){
 	char array[SIZE];
 	printf("string :");
