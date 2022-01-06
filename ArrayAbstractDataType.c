@@ -2,7 +2,7 @@
 #include<stdio.h>
 
 typedef struct{
-	int A[10];
+	int *A;
 	int length;
 	int size;
 }Array;
@@ -50,6 +50,7 @@ int Delete(Array *a,int index)
 		a->A[i] = a->A[i+1];
 	}
 	a->length--;
+	return x;
 }
 
 int LinearSearch(Array arr,int elm)
@@ -315,12 +316,14 @@ void RightRotate(Array *arr)
 
 // Inserting in a sorted Array 
 // Checking if an Array is Sorted
-// Arranging -elms on left Side
+// Arranging-elms on left Side
 
 void InsertingSorted(Array *arr,int elm)
 {
 	int i;
 	i = arr->length-1;
+	if(arr->length == arr->size)
+		return;
 	while(arr->A[i] > elm)
 	{
 		arr->A[i+1] = arr->A[i];
@@ -330,16 +333,164 @@ void InsertingSorted(Array *arr,int elm)
 	arr->length++;
 }
 
+int isSorted(Array arr)
+{
+	int i;
+	for(i = 0 ; i < arr.length-1 ; i++)
+	{
+		if(arr.A[i] > arr.A[i+1])
+		{
+			return 0;
+		}
+	}
+	return 1;
+}
+
+
+// Arrenging all the negative element to the left side
+// O(n) 
+void reArrengin(Array *arr)
+{
+	int i=0,j = arr->length-1;
+	while(i<j)
+	{
+		while(arr->A[i] < 0) i++;
+		while(arr->A[j] >= 0) j--;
+		if(i<j)
+		{
+			swap(&arr->A[i],&arr->A[j]);	
+		}	
+	}	
+}
+
+
+// Merging can only be done in sorted array
+Array * Merging(Array arr1,Array arr2)
+{
+	int i,j,k;
+	i = j = k = 0;
+	Array *cm;
+	cm = (Array *)malloc(sizeof(Array));
+	while(i < arr1.length && j < arr1.length)
+	{
+		if(arr1.A[i] < arr2.A[j])
+			cm->A[k++] = arr1.A[i++];
+		else
+			cm->A[k++] = arr2.A[j++];
+	}
+	// there will be some element missing
+	for(; i < arr1.length ; i++)
+		cm->A[k++] = arr1.A[i];
+	
+	for(; j < arr2.length ; j++)
+		cm->A[k++] = arr2.A[j];
+	
+	cm->length = arr1.length + arr2.length;	
+	cm->size = 90;
+	return cm;
+}
+
+
+Array * Union(Array arr1,Array arr2)
+{
+	int i,j,k;
+	i = j = k = 0;
+	Array *cm;
+	cm = (Array *)malloc(sizeof(Array));
+	while(i < arr1.length && j < arr1.length)
+	{
+		if(arr1.A[i] < arr2.A[j])
+			cm->A[k++] = arr1.A[i++];
+		else if(arr2.A[j] < arr1.A[i])
+			cm->A[k++] = arr2.A[j++];
+		else 
+		{
+			cm->A[k++] = arr1.A[i++];
+			j++;	
+		}	
+	}
+	// there will be some element missing
+	for(; i < arr1.length ; i++)
+		cm->A[k++] = arr1.A[i];
+	
+	for(; j < arr2.length ; j++)
+		cm->A[k++] = arr2.A[j];
+	
+	cm->length = k;	
+	cm->size = 90;
+	return cm;
+}
+
+
+Array * Intersection(Array arr1,Array arr2)
+{
+	int i,j,k;
+	i = j = k = 0;
+	Array *cm;
+	cm = (Array *)malloc(sizeof(Array));
+	while(i < arr1.length && j < arr1.length)
+	{
+		if(arr1.A[i] < arr2.A[j])
+			i++;
+		else if(arr2.A[j] < arr1.A[i])
+			j++;
+		else 
+		{
+			cm->A[k++] = arr1.A[i++];
+			j++;	
+		}	
+	}
+	cm->length = k;	
+	cm->size = 90;
+	return cm;
+}
+
 
 int main(void)
 {
-	Array arr = {{1,3,7},3,10};
-	Append(&arr,9);
-	Display(arr);
-	InsertingSorted(&arr,-34);
-	Display(arr);
-	
-	
+	int choice,elm,index,r;
+	Array arr1;
+	printf("Size of the array :");
+	scanf("%d",&arr1.size);
+	arr1.A = (int *)malloc(arr1.size * sizeof(int));
+	arr1.length = 0;
+	do{
+		printf("Menu \n");
+		printf("1. Insert \n");
+		printf("2. Delete \n");
+		printf("3. Search \n");
+		printf("4. Sum \n");
+		printf("5. Display \n");
+		printf("6. Exit \n");
+		
+		printf("Enter you Choice :");
+		scanf("%d",&choice);
+		
+		switch(choice)
+		{
+			case 1:printf("Enter the element and index (elm index) :");
+				scanf("%d %d",&elm,&index);
+				Insert(&arr1,index,elm);
+				break;
+			case 2:
+				printf("Enter the Index of the element you want to delete  :");
+				scanf("%d",&index);
+				r = Delete(&arr1,index);
+				printf("%d was Deleted\n",r);
+				break;
+			case 3:
+				printf("Enter the element you want to search :");
+				scanf("%d",&elm);
+				r = mvHeadLinearSearch(&arr1,elm);
+				printf("The element is at index %d \n",r);
+				break;
+			case 4:
+				r = Sum(arr1);
+				printf("The sum of all element is %d \n",r);
+				break;
+			case 5:Display(arr1);
+		}
+	}while(choice < 6);
 	
 	
 	return 0;
